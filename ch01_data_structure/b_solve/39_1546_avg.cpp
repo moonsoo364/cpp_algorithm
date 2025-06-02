@@ -14,6 +14,6 @@ int main(){
     for(int i : v){
         sum += i;
     }
-    avg = sum
+    avg = sum;
     return 0;
 }
