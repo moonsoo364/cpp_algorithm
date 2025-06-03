@@ -6,14 +6,19 @@ int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
-    int n, sum, avg;
+
+    int n = 0, sum = 0;
+    float avg;
     vector<int> v;
     cin >> n;
-    v.assign(0,n);
-    
+    v.resize(n); 
+    for(int i = 0; i < n; ++i) {
+        cin >> v[i]; 
+    }
     for(int i : v){
         sum += i;
     }
-    avg = sum;
+    avg = sum / v.size(); 
+    cout << avg << '\n';
     return 0;
 }

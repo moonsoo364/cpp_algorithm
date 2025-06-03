@@ -1,7 +1,5 @@
 # 백준 문제 링크
-문제 풀이 편의를 위해 링크 삽입
-문제 풀이 링크(https://www.acmicpc.net/problemset)
-[문제 풀이 링크](https://www.acmicpc.net/problemset)
+편의를 위해 백준 문제 링크 삽입 : [백준 전체 문제 링크](https://www.acmicpc.net/problemset)
 # 03-1 배열 리스트 그리고 벡터
 
 ## 배열과 리스트 핵심 이론
