@@ -28,4 +28,9 @@ int main(){
     a.begin();// 첫 번째 데이터 위치
     a.end();// 마지막 데이터 위치
 
+    //2차원 행렬의 경우
+    vector<vector<int>> v;
+    int n = 5;
+    v.resize(n,vector<int>(n));
+
 }
