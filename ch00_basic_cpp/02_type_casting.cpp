@@ -22,6 +22,9 @@ int main() {
      * 2. 소수점 이하 15 ~ 16 정밀도를 가진다.
      */
     double d = stod(s);
+
+    //long 은 windows에서 4byte 임 그래서 long long 으로 선언하여 os와 상관없이 8byte로 선언해야 함
+    long long ll = 8;
     
 
     return 0;
