@@ -3,23 +3,7 @@
 #include <algorithm>
 
 using namespace std;
-/*
-입력 예시 1
-3
-40 80 60
 
-입력 예시 2
-3
-10 20 30
-
-입력 예시 4
-4
-1 100 100 100
-
-입력 예시 5
-5
-1 2 4 8 16
-*/
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);
