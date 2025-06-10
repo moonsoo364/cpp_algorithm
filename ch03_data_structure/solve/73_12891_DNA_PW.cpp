@@ -36,7 +36,7 @@ int main() {
 
     for(int i = m; i < n; i++){
         current[charToidx(str[i - m])]--;//앞문자 제거
-        current[charToidx(str[i])]++;//뒷문자 제거
+        current[charToidx(str[i])]++;//뒷문자 추가
         if(isVal()) cnt++;
     }
     
