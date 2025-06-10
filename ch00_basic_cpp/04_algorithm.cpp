@@ -23,5 +23,9 @@ int main (){
     //내림차순 정렬
     sort(v.begin(),v.end(),greater<int>());
 
+    //절대값
+    int n = -5;
+    cout << abs(n) << '\n'; //5출력
+
     return 0;
 }
