@@ -6,7 +6,7 @@ using namespace std;
 vector<vector<int>> graph;//인접 리스트
 vector<bool> visited;
 
-int dfs(int node){
+void dfs(int node){
     visited[node] = 1;
 
     for(int next : graph[node]){
