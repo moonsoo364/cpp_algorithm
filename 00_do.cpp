@@ -1,34 +1,36 @@
-#include <iostream>
-#include <deque>
+#include<iostream>
+#include<queue>
+#include<algorithm>
 
 using namespace std;
 
-int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+struct Comp{
+    bool operator()(int x, int y){
+        int ax = abs(x), ay = abs(y);
+        if(ax == ay) return x > y;
+        return ax > ay;
+    }
+};
 
-    int n, l;
-    cin >> n >> l;
+int main(){
+    cin.tie(0), cout.tie(0), ios::sync_with_stdio(0);
+    int n;
+    cin >> n;
 
-    deque<pair<int, int>> dq;
-
-    for (int i = 0; i < n; ++i) {
-        int a;
-        cin >> a;
-
-        // 1. 윈도우 범위를 벗어난 값 제거
-        while (!dq.empty() && dq.front().first <= i - l)
-            dq.pop_front();
-
-        // 2. 현재 값보다 큰 값은 모두 제거 (최솟값 유지)
-        while (!dq.empty() && dq.back().second > a)
-            dq.pop_back();
-
-        // 3. 현재 값 추가
-        dq.emplace_back(i, a);
-
-        // 4. 현재 슬라이딩 윈도우에서의 최솟값 출력
-        cout << dq.front().second << ' ';
+    priority_queue<int,vector<int>, Comp> pq;
+    for(int i = 0; i < n; i++){
+        int t;
+        cin >> t;
+        if(!t){
+            if(pq.empty()){
+                cout << 0 << '\n';
+            }else{
+                cout << pq.top() << '\n';
+                pq.pop();
+            }
+        }else{
+            pq.push(t);
+        }
     }
 
     return 0;
