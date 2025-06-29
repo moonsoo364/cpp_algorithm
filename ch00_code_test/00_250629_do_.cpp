@@ -1,89 +1,105 @@
-// 250629 코딩 테스트 연습
-#include<iostream>
-#include<vector>
-#include<queue>
+#include <iostream>
+#include <vector>
+#include <queue>
 using namespace std;
-// 백조의 호수 : 3197 
-// .: 물, L: 백조, X: 얼음
-// 매일 물과 인접한 얼음을 녹이고 백조가 처음 만나는 일 수 구하기
 
-int x, y;
-int day = 0;
-vector<vector<char>> v;
-vector<vector<int>> visited;
+int R, C;
+vector<vector<char>> lake;
+pair<int, int> swan[2];
 
-queue<pair<int,int>> l;// 백조
-queue<pair<int,int>> cq;// 현재 큐
-queue<pair<int,int>> nq;// 다음 큐
+vector<vector<bool>> waterVisited;
+vector<vector<bool>> swanVisited;
 
-vector<int> dy = {-1, 0 , 1, 0};
-vector<int> dx = {0 , 1, 0 , -1};
+queue<pair<int, int>> waterQ, nextWaterQ;
+queue<pair<int, int>> swanQ, nextSwanQ;
 
-void bfs(){
-    day++;
-    vector<vector<bool>> visited(y, vector<bool>(x, false));
-    while(!cq.empty()){
-        pair<int,int> p = cq.front();
-        int qy = p.first;
-        int qx = p.second;
-        cq.pop();
-        for(int i = 0 ; i < 4 ; i++){
-            int sy = qy + dy[i];
-            int sx = qx + dx[i];
-            cout << "sy: " <<  sy<< '\n';
-            cout << "sx: " <<  sx<< '\n';
-            if (sy >= 0 && sy < y && sx >= 0 && sx < x) {
-                if (!visited[sy][sx]) {
-                    cout << "is passed" << '\n';
-                } else {
-                    cout << "already visited: " << sy << ", " << sx << '\n';
-                }
-            } else {
-                cout << "out of bounds: " << sy << ", " << sx << '\n';
+int dy[4] = {-1, 0, 1, 0};
+int dx[4] = {0, 1, 0, -1};
+
+void init() {
+    cin >> R >> C;
+    lake.resize(R, vector<char>(C));
+    waterVisited.assign(R, vector<bool>(C, false));
+    swanVisited.assign(R, vector<bool>(C, false));
+
+    int swanCount = 0;
+    for (int i = 0; i < R; ++i) {
+        string row;
+        cin >> row;
+        for (int j = 0; j < C; ++j) {
+            lake[i][j] = row[j];
+            if (lake[i][j] != 'X') {
+                waterQ.push({i, j});
+                waterVisited[i][j] = true;
             }
-
-            // if(sy > -1 && sy < y && sx > -1 && sx < x && !visited[sy][sx]){
-            //     cout << "sy: " <<  sy<< '\n';
-            //     cout << "sx: " <<  sx<< '\n';
-                
-            //     if(!visited[sy][sx]){
-            //         visited[sy][sx] = 1;
-            //         if(v[sy][sx] == 'L'){
-            //             return;
-            //         }
-            //         if(v[sy][sx] == 'X'){
-            //             nq.push({sy,sx});
-            //         }
-            //         if(v[sy][sx] == '.'){
-            //             cq.push({sy,sx});
-            //         }
-            //     }
-            // } 
+            if (lake[i][j] == 'L') {
+                swan[swanCount++] = {i, j};
+            }
         }
     }
-    
+    swanQ.push(swan[0]);
+    swanVisited[swan[0].first][swan[0].second] = true;
 }
 
-int main(){
-    cout.tie(0), cin.tie(0), ios::sync_with_stdio(0);
-    cin >> y >> x;
-    v.resize(y,vector<char>(x));
-    for(int i = 0; i < y; i++){
-        for(int j = 0; j < x; j++){
-            cin >> v[i][j];
-            //백조의 위치
-            if(v[i][j] == 'L'){
-                l.push({i,j});
+bool canMeet() {
+    while (!swanQ.empty()) {
+        auto [y, x] = swanQ.front(); swanQ.pop();
+
+        for (int d = 0; d < 4; ++d) {
+            int ny = y + dy[d];
+            int nx = x + dx[d];
+            if (ny < 0 || ny >= R || nx < 0 || nx >= C || swanVisited[ny][nx]) continue;
+            swanVisited[ny][nx] = true;
+
+            if (lake[ny][nx] == '.') {
+                swanQ.push({ny, nx});
+            } else if (lake[ny][nx] == 'X') {
+                nextSwanQ.push({ny, nx});
+            } else if (lake[ny][nx] == 'L') {
+                return true; // 다른 백조를 만남
             }
         }
     }
-    cq.push(l.front());
-    bfs();
-    while(!nq.empty()){
-        cq = nq;
-        bfs();
-    }
-    cout << day << '\n';
+    return false;
+}
 
+void meltIce() {
+    while (!waterQ.empty()) {
+        auto [y, x] = waterQ.front(); waterQ.pop();
+        for (int d = 0; d < 4; ++d) {
+            int ny = y + dy[d];
+            int nx = x + dx[d];
+            if (ny < 0 || ny >= R || nx < 0 || nx >= C || waterVisited[ny][nx]) continue;
+
+            if (lake[ny][nx] == 'X') {
+                lake[ny][nx] = '.';
+                nextWaterQ.push({ny, nx});
+                waterVisited[ny][nx] = true;
+            }
+        }
+    }
+}
+
+int solve() {
+    int day = 0;
+    while (true) {
+        if (canMeet()) return day;
+        meltIce();
+
+        // 다음 날 셋업
+        swanQ = nextSwanQ;
+        waterQ = nextWaterQ;
+
+        while (!nextSwanQ.empty()) nextSwanQ.pop();
+        while (!nextWaterQ.empty()) nextWaterQ.pop();
+
+        day++;
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(false); cin.tie(nullptr);
+    init();
+    cout << solve() << '\n';
     return 0;
 }
