@@ -1,7 +1,7 @@
 #include<iostream>
 #include<vector>
 #include<algorithm>
-// 11004
+// 5 2
 using namespace std;
 int quick(vector<int> & v, int low, int high){
  int pivot = v[high];
