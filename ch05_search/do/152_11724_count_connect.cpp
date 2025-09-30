@@ -1,25 +1,25 @@
-// 250930 풀이 : https://www.acmicpc.net/problem/11724
-#include<iostream>
-#include<vector>
-using namespace std;
-int n, m;
-vector<bool> visited;
-vector<vector<int>> v;
+#include <iostream>
+#include <vector>
 
-void dfs(int x){
-    visited[x] = 1;
-    for(int y : v[x]){
-        if(!visited[y]){
-            dfs(y);
+using namespace std;
+
+int n, m;
+vector<vector<int>> v;
+vector<int> visited;
+
+void dfs(int index){
+    visited[index] = 1;
+    for(int i : v[index]){
+        if(!visited[i]){
+            dfs(i);
         }
     }
 }
-
 int main(){
     cin.tie(0);cout.tie(0);ios::sync_with_stdio(0);
     cin >> n >> m;
-   v.resize(n+1);
-   visited.resize(n+1,0);
+    v.resize(n+1);
+    visited.resize(n+1);
 
     for(int i = 0; i < m; i++){
         int x, y;
@@ -29,7 +29,7 @@ int main(){
     }
     int cnt = 0;
     for(int i = 1; i <= n; i++){
-        if(!visited[i]) {
+        if(!visited[i]){
             dfs(i);
             cnt++;
         }
