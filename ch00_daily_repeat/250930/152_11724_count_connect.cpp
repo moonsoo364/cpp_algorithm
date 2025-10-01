@@ -1,28 +1,27 @@
-#include <iostream>
-#include <vector>
+#include<iostream>
+#include<vector>
 
 using namespace std;
-
 int n, m;
 vector<vector<int>> v;
 vector<int> visited;
 
-void dfs(int index){
-    visited[index] = 1;
-    for(int i : v[index]){
+void dfs(int node){
+    visited[node] = 1;
+    for(int i : v[node]){
         if(!visited[i]){
             dfs(i);
         }
     }
 }
-int main(){
-    cin.tie(0);cout.tie(0);ios::sync_with_stdio(0);
+
+int main() {
     cin >> n >> m;
     v.resize(n+1);
     visited.resize(n+1);
 
     for(int i = 0; i < m; i++){
-        int x, y;
+        int x,y;
         cin >> x >> y;
         v[x].push_back(y);
         v[y].push_back(x);

@@ -1,19 +1,29 @@
 #include<iostream>
 #include<vector>
+#include<algorithm>
+
 using namespace std;
 int n, m;
 vector<vector<int>> v;
 vector<int> visited;
+int temp = 0;
+int found = 0;
 
-int dfs(int index, int add){
-  visited[index] = 1;
-  add++;
-  for(int i : v[index]){
+void dfs(int node, int depth){
+  if(found) return;
+  if(depth == 4){
+    found = 1;
+    return;
+  }
+
+  visited[node] = 1;
+  for(int i : v[node]){
     if(!visited[i]){
-      add = dfs(i,add);
+      dfs(i, depth + 1);
+      if(found) return;
     }
   }
-  return add;
+
 }
 
 int main(){
@@ -27,17 +37,10 @@ int main(){
     v[x].push_back(y);
     v[y].push_back(x);
   }
-  int maxDepth = 0;
-  for(int i = 0; i < n; i++){
-    if(!visited[i]){
-      int depth = dfs(i,0);
-      maxDepth =  depth > maxDepth ? depth : maxDepth;
-    }
+
+  for(int i = 0; i < n && !found ; i++){
+    dfs(i,0);
   }
-  if(maxDepth > 1){
-    cout << '1' << '\n';
-  }else{
-    cout << '0' << '\n';
-  }
+  cout << found << '\n';
   return 0;
 }
