@@ -1,39 +1,43 @@
 #include<iostream>
 #include<vector>
-#include<algorithm>
-// 11004
 using namespace std;
-int quick(vector<int> & v, int low, int high){
- int pivot = v[high];
- int i = low - 1;// 가장 최근 작은 값
+int n, m;
+vector<vector<int>> v;
+vector<int> visited;
 
- for(int j = low; j < high; j++){
-  if(v[j] < pivot){
-    i++;
-    swap(v[i], v[j]);
+int dfs(int index, int add){
+  visited[index] = 1;
+  add++;
+  for(int i : v[index]){
+    if(!visited[i]){
+      add = dfs(i,add);
+    }
   }
- }
+  return add;
+}
 
- swap(v[high],v[i+1]);
- return i+1;
-}
-void part(vector<int> & v, int low, int high){
-  if(low < high){
-    int pi = quick(v, low, high);
-    part(v, low, pi-1);
-    part(v, pi+1, high);
-  }
-}
-int main (){
-  cout.tie(0);cin.tie(0);ios::sync_with_stdio(0);
-  int n, m;
+int main(){
   cin >> n >> m;
-  vector<int> v;
-  v.resize(n);
-  for(int i = 0; i < n; i++){
-    cin >> v[i];
+  v.resize(n+1);
+  visited.resize(n+1);
+
+  for(int i = 0; i < m; i++){
+    int x, y;
+    cin >> x >> y;
+    v[x].push_back(y);
+    v[y].push_back(x);
   }
-  part(v,0,n-1);
-  cout << v[m-1] << '\n';
+  int maxDepth = 0;
+  for(int i = 0; i < n; i++){
+    if(!visited[i]){
+      int depth = dfs(i,0);
+      maxDepth =  depth > maxDepth ? depth : maxDepth;
+    }
+  }
+  if(maxDepth > 1){
+    cout << '1' << '\n';
+  }else{
+    cout << '0' << '\n';
+  }
   return 0;
 }
