@@ -1,35 +1,33 @@
-#include <iostream>
-#include <cmath>
+#include<iostream>
+#include<vector>
+#include<cmath>
 using namespace std;
-
 int n;
+int cnt = 0;
 
-bool isPrime(int n){
-  if(n < 2) return 0; //0,1는 소수가 아니다.
-  // ex 100 = 2 * 50 = 5 * 20 = 10 * 10
-  // : 작은 쪽의 인수는 반드시 루트 n 에 포함된다.  
-  for(int i = 2; i <= sqrt(n); i++){
-    if(n % i == 0) return false; // 나누어 떨어지면 소수가 아니다.
+bool isPrime(int num){
+  if (num < 2) return false; // 1과 0은 소수가 아니다.
+  for(int i = 2; i <= sqrt(num); i++){
+    if(num % i == 0) return false; 
   }
-  return 1;
+  return true;
 }
-void go(int cn, int prev){
-  if(cn <= n){
-    int tenPrev = 10 * prev;
-    for(int i = 0; i < 10; i++){
-      if (isPrime(tenPrev + i)){
-        go(cn+1, tenPrev + i);
+
+void go(int prev, int depth){
+  if(depth < n){
+    for(int i = 1; i < 10; i++){
+      int next =  i + prev * 10;
+      if (isPrime(next)){
+        go(next, depth+1);
       }
     }
   }else{
     cout << prev << '\n';
   }
-
-
 }
 int main(){
-  ios::sync_with_stdio(0);cout.tie(0);
+  cin.tie(0); cout.tie(0); ios::sync_with_stdio(0);
   cin >> n;
-  go(1,0);
+  go(0,0);
   return 0;
 }
